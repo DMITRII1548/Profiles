@@ -6,6 +6,11 @@ const routes = [
         component: () => import('./Components/User/Registration.vue'),
         name: 'user.registration',
     },
+    {
+        path: '/user/login',
+        component: () => import('./Components/User/Login.vue'),
+        name: 'user.login',
+    },
 ];
 
 export default VueRouter.createRouter({
