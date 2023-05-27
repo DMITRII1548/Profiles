@@ -2,9 +2,9 @@ import * as VueRouter from 'vue-router';
 
 const routes = [
     {
-        path: '/test',
-        component: () => import('./Components/Test.vue'),
-        name: 'router.test',
+        path: '/user/registration',
+        component: () => import('./Components/User/Registration.vue'),
+        name: 'user.registration',
     },
 ];
 
