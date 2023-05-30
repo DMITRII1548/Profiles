@@ -18,8 +18,11 @@
                 <input v-model="password_confirmation" type="password" placeholder="Confirm password" class="w-full border-2 border-black p-1 rounded">
                 <p v-if="errors.password_confirmation" class="text-sm text-red-500">{{ errors.password_confirmation[0] }}</p>
             </div>
-            <div>
+            <div class="flex gap-1">
                 <button :disabled="isDisabled" class="font-medium border-2 border-black px-2 py-1 rounded w-32 bg-sky-500/100 mt-3 hover:bg-sky-500/75">Sign up</button>
+                <button class="font-medium border-2 border-black px-2 py-1 rounded w-32 bg-sky-500/100 mt-3 hover:bg-sky-500/75">
+                    <router-link :to="{ name: 'user.login' }">Sign in</router-link>
+                </button>
             </div>
         </form>
     </div>
