@@ -50,10 +50,11 @@ export default {
                 })
                     .then(res => {
                         localStorage.setItem('x_xsrf_token', res.config.headers['X-XSRF-TOKEN'])
-                    })   
+                        this.$router.push({ name: 'user.verify-email'})
+                    })
                     .catch(error => {
                         this.errors = error.response.data.errors
-                    })             
+                    })
             });
 
         }
