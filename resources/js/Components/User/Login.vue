@@ -10,9 +10,12 @@
                     <input v-model="password" type="password" placeholder="Password" class="w-full border-2 border-black p-1 rounded">
                     <p v-if="errors.password" class="text-sm text-red-500">{{ errors.password[0] }}</p>
                 </div>
-    			<div>
+    			<div class="flex gap-1">
     				<button :disabled="isDisabled" class="font-medium border-2 border-black px-2 py-1 rounded w-32 bg-sky-500/100 mt-3 hover:bg-sky-500/75">Sign in</button>
-    			</div>
+    			    <button class="font-medium border-2 border-black px-2 py-1 rounded w-32 bg-sky-500/100 mt-3 hover:bg-sky-500/75">
+                        <router-link :to="{ name: 'user.registration' }">Sing up</router-link>
+                    </button>
+                </div>
     		</form>
     		<a href="#" class="text-center"><div class="underline mt-6">Forgot password?</div></a>
     	</div>
