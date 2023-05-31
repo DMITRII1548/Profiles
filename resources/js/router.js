@@ -16,6 +16,11 @@ const routes = [
         component: () => import('./Components/User/VerifyEmail.vue'),
         name: 'user.verify-email'
     },
+    {
+        path: '/user/dashboard',
+        component: () => import('./Components/User/Dashboard.vue'),
+        name: 'user.dashboard',
+    },
 ];
 
 export default VueRouter.createRouter({

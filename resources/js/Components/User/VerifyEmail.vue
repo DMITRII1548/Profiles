@@ -33,7 +33,7 @@ export default {
     methods: {
         SendAgainMail() {
             axios.post('/email/verification-notification')
-                .then(response => {
+                .then(res => {
                     this.timeSendAgain = 60
                 })
                 .catch(error => {
