@@ -1,6 +1,6 @@
 <template>
     	<div class="w-96 mx-auto mt-8">
-    		<h1 class="text-lg font-medium text-center">Registration</h1>
+    		<h1 class="text-lg font-medium text-center">Login</h1>
     		<form @submit.prevent="login" class="mt-6 flex flex-col gap-2 items-center border border-black py-8 rounded-md">
                 <div class="w-64">
                     <input v-model="email" type="email" placeholder="Email" class="w-full border-2 border-black p-1 rounded">
@@ -17,7 +17,7 @@
                     </button>
                 </div>
     		</form>
-    		<a href="#" class="text-center"><div class="underline mt-6">Forgot password?</div></a>
+    		<router-link :to="{ name: 'user.forgot-password' }" class="text-center"><div class="underline mt-6">Forgot password?</div></router-link>
     	</div>
 </template>
 
