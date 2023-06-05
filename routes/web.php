@@ -14,4 +14,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/user/reset-password/{token}', function () {
+    return view('index');
+})->name('password.reset');
+
 Route::get('/{page}', IndexController::class)->where('page', '.*');
