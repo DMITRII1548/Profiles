@@ -6,7 +6,9 @@
                 Home
             </button>
             <button class="font-medium border-2 border-black px-2 py-1 rounded w-32 bg-sky-500/100 mt-3 hover:bg-sky-500/75">
-                Account
+                <router-link :to="{ name: 'user.edit' }">
+                    Account
+                </router-link>
             </button>
             <button @click="logout()" class="font-medium border-2 border-black px-2 py-1 rounded w-32 bg-sky-500/100 mt-3 hover:bg-sky-500/75">
                 Logout

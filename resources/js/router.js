@@ -31,6 +31,11 @@ const routes = [
         component: () => import('./Components/User/ResetPassword.vue'),
         name: 'user.reset-password',
     },
+    {
+        path: '/user/edit',
+        component: () => import('./Components/User/Edit.vue'),
+        name: 'user.edit',
+    },
 ];
 
 const router =  VueRouter.createRouter({
