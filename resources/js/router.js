@@ -31,6 +31,11 @@ const routes = [
         component: () => import('./Components/User/ResetPassword.vue'),
         name: 'user.reset-password',
     },
+    {
+        path: '/user/edit',
+        component: () => import('./Components/User/Edit.vue'),
+        name: 'user.edit',
+    },
 ];
 
 const router =  VueRouter.createRouter({
@@ -54,9 +59,19 @@ router.beforeEach((to, from, next) => {
         } else {
             return next({ name: 'user.login' })
         }
+    } else {
+        if (to.name === 'user.login') {
+            return next({ name: 'user.dashboard' })
+        } else if (to.name === 'user.registration') {
+            return next({ name: 'user.dashboard' })
+        } else if (to.name === 'user.forgot-password') {
+            return next({ name: 'user.dashboard' })
+        } else if (to.name === 'user.reset-password') {
+            return next({ name: 'user.dashboard' })
+        } else {
+            return next()
+        }
     }
-
-    next()
 
 })
 
