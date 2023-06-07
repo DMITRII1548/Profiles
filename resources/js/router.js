@@ -1,4 +1,4 @@
-import * as VueRouter from 'vue-router';
+import * as VueRouter from 'vue-router'
 
 const routes = [
     {
@@ -36,13 +36,25 @@ const routes = [
         component: () => import('./Components/User/Edit.vue'),
         name: 'user.edit',
     },
-];
+
+    {
+        path: '/profile/show',
+        component: () => import('./Components/Profile/Show.vue'),
+        name: 'profile.show',
+    },
+    {
+        path: '/profile/create',
+        component: () => import('./Components/Profile/Create.vue'),
+        name: 'profile.create',
+    }
+
+]
 
 const router =  VueRouter.createRouter({
     mode: 'history',
     history: VueRouter.createWebHistory('/'),
     routes,
-});
+})
 
 router.beforeEach((to, from, next) => {
     const token = localStorage.getItem('x_xsrf_token')
