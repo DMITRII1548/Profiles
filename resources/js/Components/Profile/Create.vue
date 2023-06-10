@@ -10,6 +10,7 @@
             <div class="w-64">
                 <p>Avatar</p>
                 <input v-on:change="onChangeFile" type="file" multiple>
+                <p v-if="errors.image" class="text-sm text-red-500">{{ errors.image[0] }}</p>
             </div>
             <div class="w-64">
                 <textarea v-model="description" type="text" placeholder="Description" class="w-64 h-32 border-2 border-black p-1 rounded"></textarea>
@@ -52,13 +53,20 @@ export default {
         },
 
         store() {
-            axios.post('/api/profile', {
+            axios.post('/api/profiles', {
                 title: this.title,
                 description: this.description,
-                file: this.file,
+                image: this.file,
+            }, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
             })
                 .then(res => {
-
+                    this.$router.push({ name: 'profile.show' })
+                })
+                .catch(error => {
+                    this.errors = error.response.data.errors
                 })
         },
     },
