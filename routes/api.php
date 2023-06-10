@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,3 +28,6 @@ Route::prefix('user')->group(function () {
     Route::patch('/', [UserController::class, 'update']);
 })->middleware(['auth:sanctum', 'verified']);
 
+Route::prefix('profiles')->group(function () {
+    Route::post('/', [ProfileController::class, 'store']);
+})->middleware(['auth:sanctum', 'verified']);
