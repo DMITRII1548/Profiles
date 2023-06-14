@@ -26,7 +26,7 @@ class ProfileController extends Controller
         $image = $this->imageService->put($data['image']);
 
         // fit image
-        $this->imageService->fit($data['image'], $image['name'], 200, 200);
+        $this->imageService->fit($data['image'], $image['name'], 224, 224);
 
         // create profile
         Auth::user()

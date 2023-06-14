@@ -6,7 +6,7 @@
                 Home
             </button>
             <button class="font-medium border-2 border-black px-2 py-1 rounded w-32 bg-sky-500/100 mt-3 hover:bg-sky-500/75">
-                <router-link :to="{ name: 'profile.show' }">
+                <router-link :to="{ name: 'authUserProfile.show' }">
                     Your profile
                 </router-link>
             </button>
