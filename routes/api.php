@@ -28,4 +28,5 @@ Route::prefix('profiles')->group(function () {
     Route::get('/show', [ProfileController::class, 'showProfileOfCurrentUser']);
     Route::get('/{profile}', [ProfileController::class, 'show']);
     Route::post('/', [ProfileController::class, 'store']);
+    Route::delete('/', [ProfileController::class, 'destroy']);
 })->middleware(['auth:sanctum', 'verified']);

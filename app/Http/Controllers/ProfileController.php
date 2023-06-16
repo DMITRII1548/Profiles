@@ -58,4 +58,16 @@ class ProfileController extends Controller
 
         return response(['created' => true]);
     }
+
+    public function destroy(): Response
+    {
+        $profile = Auth::user()->profile;
+
+        Storage::disk('public')->delete($profile->avatar_path);
+        $profile->delete();
+
+        return response([
+            'deleted' => true,
+        ]);
+    }
 }

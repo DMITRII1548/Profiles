@@ -13,7 +13,7 @@
                 <button class="font-medium border-2 border-black px-2 py-1 rounded w-32 bg-sky-500/100 mt-3 hover:bg-sky-500/75">
                     <router-link :to="{ name: 'profile.edit' }">Edit</router-link>
                 </button>
-                <button class="font-medium border-2 border-black px-2 py-1 rounded w-32 bg-red-500/100 mt-3 hover:bg-red-500/75">
+                <button @click="destroy" class="font-medium border-2 border-black px-2 py-1 rounded w-32 bg-red-500/100 mt-3 hover:bg-red-500/75">
                     Delete
                 </button>
             </div>
@@ -50,7 +50,17 @@ export default {
                 .then(res => {
                     this.profile = res.data
                 })
-        }
+                .catch(res => {
+                    this.profile = null
+                })
+        },
+
+        destroy() {
+            axios.delete('/api/profiles')
+                .then(res => {
+                    this.$router.push({ name: 'user.dashboard' })
+                })
+        },
     }
 }
 </script>

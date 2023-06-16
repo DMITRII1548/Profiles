@@ -20,9 +20,9 @@ class ProfileTest extends TestCase
     {
         $this->withExceptionHandling();
 
-        $user = User::factory()->create();
-
         Storage::fake('public');
+
+        $user = User::factory()->create();
 
         $response = $this->actingAs($user)->post('/api/profiles', [
             'title' => 'title for profile',
@@ -192,6 +192,8 @@ class ProfileTest extends TestCase
     {
         $this->withExceptionHandling();
 
+        Storage::fake('public');
+
         $user = User::factory()->create();
 
         $response = $this->actingAs($user)->get('/api/profiles/show');
@@ -224,5 +226,32 @@ class ProfileTest extends TestCase
             ->assertJson(
                 ProfileResource::make($profile)->resolve()
             );
+    }
+
+    public function test_destroying_a_profile(): void
+    {
+        $this->withExceptionHandling();
+
+        Storage::fake('public');
+
+        $profile = Profile::factory()
+            ->for(\App\Models\User::factory()->state([
+                'name' => 'user',
+                'email' => 'user@gmail.com',
+            ]))
+            ->create();
+
+        $response = $this->actingAs($profile->user)->delete('/api/profiles');
+
+        $response->assertOk()
+            ->assertJson([
+                'deleted' => true,
+            ]);
+
+        $this->assertDatabaseMissing('profiles', [
+            'id' => $profile->id,
+        ]);
+
+        Storage::assertMissing($profile->path);
     }
 }
