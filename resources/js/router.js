@@ -42,7 +42,7 @@ const routes = [
         name: 'authUserProfile.show',
     },
     {
-        path: '/profile/show',
+        path: '/profile/:id',
         component: () => import('./Components/Profile/Show.vue'),
         name: 'profile.show',
     },
