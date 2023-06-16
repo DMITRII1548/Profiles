@@ -36,9 +36,13 @@ const routes = [
         component: () => import('./Components/User/Edit.vue'),
         name: 'user.edit',
     },
-
     {
         path: '/profile/show',
+        component: () => import('./Components/Profile/CurrentUserShow.vue'),
+        name: 'authUserProfile.show',
+    },
+    {
+        path: '/profile/:id',
         component: () => import('./Components/Profile/Show.vue'),
         name: 'profile.show',
     },
@@ -46,7 +50,12 @@ const routes = [
         path: '/profile/create',
         component: () => import('./Components/Profile/Create.vue'),
         name: 'profile.create',
-    }
+    },
+    {
+        path: '/profile/edit',
+        component: () => import('./Components/Profile/Edit.vue'),
+        name: 'profile.edit',
+    },
 
 ]
 

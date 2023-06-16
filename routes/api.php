@@ -20,14 +20,12 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/user', function (Request 
     return $request->user();
 });
 
-Route::get('/get', function () {
-    return 1111;
-})->middleware(['auth:sanctum', 'verified']);
-
 Route::prefix('user')->group(function () {
     Route::patch('/', [UserController::class, 'update']);
 })->middleware(['auth:sanctum', 'verified']);
 
 Route::prefix('profiles')->group(function () {
+    Route::get('/show', [ProfileController::class, 'showProfileOfCurrentUser']);
+    Route::get('/{profile}', [ProfileController::class, 'show']);
     Route::post('/', [ProfileController::class, 'store']);
 })->middleware(['auth:sanctum', 'verified']);

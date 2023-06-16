@@ -2,6 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Http\Resources\Profile\ProfileResource;
+use App\Models\Profile;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -157,5 +159,70 @@ class ProfileTest extends TestCase
         ]);
 
         $response->assertStatus(302);
+    }
+
+    public function test_showing_profile_of_current_user(): void
+    {
+        $this->withExceptionHandling();
+
+        Storage::fake('public');
+
+        $profile = Profile::factory()
+            ->for(\App\Models\User::factory()->state([
+                'name' => 'user',
+                'email' => 'user@gmail.com',
+            ]))
+            ->create();
+
+        $response = $this->actingAs($profile->user)->get('/api/profiles/show');
+
+        $response->assertOk()
+            ->assertJsonStructure([
+                'id',
+                'title',
+                'avatar_url',
+                'description',
+            ])
+            ->assertJson(
+                ProfileResource::make($profile)->resolve()
+            );
+    }
+
+    public function test_showing_not_exist_auth_user_profile(): void
+    {
+        $this->withExceptionHandling();
+
+        $user = User::factory()->create();
+
+        $response = $this->actingAs($user)->get('/api/profiles/show');
+
+        $response->assertStatus(204);
+    }
+
+    public function test_showing_any_profiles_for_any_users(): void
+    {
+        $this->withExceptionHandling();
+
+        Storage::fake('public');
+
+        $profile = Profile::factory()
+            ->for(\App\Models\User::factory()->state([
+                'name' => 'user',
+                'email' => 'user@gmail.com',
+            ]))
+            ->create();
+
+        $response = $this->actingAs($profile->user)->get('/api/profiles/' . $profile->id);
+
+        $response->assertOk()
+            ->assertJsonStructure([
+                'id',
+                'title',
+                'avatar_url',
+                'description',
+            ])
+            ->assertJson(
+                ProfileResource::make($profile)->resolve()
+            );
     }
 }
