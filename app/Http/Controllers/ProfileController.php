@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Profile\StoreRequest;
+use App\Http\Resources\Profile\ProfileResource;
+use App\Models\Profile;
 use App\Services\ImageService;
 use Carbon\Carbon;
 use Illuminate\Http\Response;
@@ -16,6 +18,22 @@ class ProfileController extends Controller
     public function __construct()
     {
         $this->imageService = new ImageService;
+    }
+
+    public function showProfileOfCurrentUser(): array|Response
+    {
+        $profile = Auth::user()->profile;
+
+        if (!$profile) {
+            return response([], 204);
+        } else {
+            return ProfileResource::make($profile)->resolve();
+        }
+    }
+
+    public function show(Profile $profile): array
+    {
+        return ProfileResource::make($profile)->resolve();
     }
 
     public function store(StoreRequest $request): Response
@@ -38,6 +56,6 @@ class ProfileController extends Controller
                 'avatar_url' => $image['url'],
             ]);
 
-        return response([ 'created' => true ]);
+        return response(['created' => true]);
     }
 }

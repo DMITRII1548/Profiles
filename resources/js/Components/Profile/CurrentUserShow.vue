@@ -3,7 +3,7 @@
         <router-link :to="{ name: 'user.dashboard' }" class="text-lg text-sky-500">Back</router-link>
         <h2 class="text-lg font-medium text-center">Your profile</h2>
         <div class="w-full">
-            <img src="http://profiles/storage/images/80342e6dfb8a01ac93195a639f1b118f3e1f9.jpg" alt="" class="p-2 mx-auto w-56 h-56">
+            <img src="http://profiles/storage/images/9cfb1fe4135ab27687be2314bd013c35.png" alt="" class="p-2 mx-auto w-56 h-56">
             <span class="float-right">
                 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Mollitia debitis veritatis est, quaerat, fugit aut hic quos illo odio ducimus eum consectetur sint harum enim, molestiae nihil reiciendis nesciunt dolorum.
                 Lorem ipsum dolor sit, amet consectetur adipisicing elit. Nisi laudantium minus optio cum facilis ratione. Earum incidunt unde placeat iusto magnam nemo explicabo ipsum, vel minus excepturi, voluptate nisi fugit?
