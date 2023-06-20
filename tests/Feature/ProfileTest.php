@@ -64,8 +64,6 @@ class ProfileTest extends TestCase
 
     public function test_attribute_title_is_required_for_storing_profile(): void
     {
-        $this->withExceptionHandling();
-
         $user = User::factory()->create();
 
         Storage::fake('public');
@@ -80,8 +78,6 @@ class ProfileTest extends TestCase
 
     public function test_attribute_title_is_string_for_storing_profile(): void
     {
-        $this->withExceptionHandling();
-
         $user = User::factory()->create();
 
         Storage::fake('public');
@@ -97,8 +93,6 @@ class ProfileTest extends TestCase
 
     public function test_attribute_description_is_required_for_storing_profile(): void
     {
-        $this->withExceptionHandling();
-
         $user = User::factory()->create();
 
         Storage::fake('public');
@@ -113,8 +107,6 @@ class ProfileTest extends TestCase
 
     public function test_attribute_description_is_string_for_storing_profile(): void
     {
-        $this->withExceptionHandling();
-
         $user = User::factory()->create();
 
         Storage::fake('public');
@@ -130,8 +122,6 @@ class ProfileTest extends TestCase
 
     public function test_attribute_image_is_required_for_storing_profile(): void
     {
-        $this->withExceptionHandling();
-
         $user = User::factory()->create();
 
         Storage::fake('public');
@@ -146,8 +136,6 @@ class ProfileTest extends TestCase
 
     public function test_attribute_image_is_file_for_storing_profile(): void
     {
-        $this->withExceptionHandling();
-
         $user = User::factory()->create();
 
         Storage::fake('public');
@@ -253,5 +241,198 @@ class ProfileTest extends TestCase
         ]);
 
         Storage::assertMissing($profile->path);
+    }
+
+    public function test_updating_a_profile_with_image(): void
+    {
+        $this->withExceptionHandling();
+
+        Storage::fake('public');
+
+        $profile = Profile::factory()
+            ->for(\App\Models\User::factory()->state([
+                'name' => 'user',
+                'email' => 'user@gmail.com',
+            ]))
+            ->create();
+
+        $response = $this->actingAs($profile->user)->patch('/api/profiles', [
+            'title' => 'updating title',
+            'description' => 'updating description',
+            'image' => UploadedFile::fake()->image('post.jpg'),
+        ]);
+
+        $response->assertOk()
+            ->assertJson([
+                'updated' => true
+            ]);
+
+        $this->assertDatabaseMissing('profiles', $profile->toArray())
+            ->assertDatabaseHas('profiles', [
+                'title' => 'updating title',
+                'description' => 'updating description',
+            ]);
+
+        Storage::disk('public')->assertMissing($profile->avatar_path);
+        Storage::disk('public')->assertExists(
+            Auth::user()
+                ->profile
+                ->avatar_path
+        );
+    }
+
+    public function test_updating_a_profile_without_image(): void
+    {
+        $this->withExceptionHandling();
+
+        Storage::fake('public');
+
+        $profile = Profile::factory()
+            ->for(\App\Models\User::factory()->state([
+                'name' => 'user',
+                'email' => 'user@gmail.com',
+            ]))
+            ->create();
+
+        $response = $this->actingAs($profile->user)->patch('/api/profiles', [
+            'title' => 'updating title',
+            'description' => 'updating description',
+            'image' => null,
+        ]);
+
+        $response->assertOk()
+            ->assertJson([
+                'updated' => true
+            ]);
+
+        $this->assertDatabaseMissing('profiles', $profile->toArray())
+            ->assertDatabaseHas('profiles', [
+                'title' => 'updating title',
+                'description' => 'updating description',
+            ]);
+    }
+
+    public function test_attribute_title_is_required_for_updating_profile(): void
+    {
+        $user = User::factory()->create();
+
+        Storage::fake('public');
+
+        $response = $this->actingAs($user)->patch('/api/profiles', [
+            'description' => 'description for profile',
+            'image' => UploadedFile::fake()->image('post.jpg'),
+        ]);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_attribute_title_is_string_for_updating_profile() : void
+    {
+        $user = User::factory()->create();
+
+        Storage::fake('public');
+
+        $response = $this->actingAs($user)->patch('/api/profiles', [
+            'title' => true,
+            'description' => 'description for profile',
+            'image' => UploadedFile::fake()->image('post.jpg'),
+        ]);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_attribute_description_is_required_for_updating_profile(): void
+    {
+        $user = User::factory()->create();
+
+        Storage::fake('public');
+
+        $response = $this->actingAs($user)->patch('/api/profiles', [
+            'title' => 'updating title',
+            'image' => UploadedFile::fake()->image('post.jpg'),
+        ]);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_attribute_description_is_string_for_updating_profile(): void
+    {
+        $user = User::factory()->create();
+
+        Storage::fake('public');
+
+        $response = $this->actingAs($user)->patch('/api/profiles', [
+            'title' => 'updating title',
+            'description' => true,
+            'image' => UploadedFile::fake()->image('post.jpg'),
+        ]);
+
+        $response->assertStatus(302);
+    }
+
+    public function test_attribute_image_can_be_null_for_updating_profile()
+    {
+        $user = User::factory()->create();
+
+        Storage::fake('public');
+
+        $profile = Profile::factory()
+            ->for(\App\Models\User::factory()->state([
+                'name' => 'user',
+                'email' => 'user@gmail.com',
+            ]))
+            ->create();
+
+        $response = $this->actingAs($profile->user)->patch('/api/profiles', [
+            'title' => 'updating title',
+            'description' => 'updating description',
+            'image' => null,
+        ]);
+
+        $response->assertStatus(200);
+    }
+
+    public function test_attribute_image_can_be_image_for_updating_profile()
+    {
+        $user = User::factory()->create();
+
+        Storage::fake('public');
+
+        $profile = Profile::factory()
+            ->for(\App\Models\User::factory()->state([
+                'name' => 'user',
+                'email' => 'user@gmail.com',
+            ]))
+            ->create();
+
+        $response = $this->actingAs($profile->user)->patch('/api/profiles', [
+            'title' => 'updating title',
+            'description' => 'updating description',
+            'image' => UploadedFile::fake()->image('post.jpg'),
+        ]);
+
+        $response->assertStatus(200);
+    }
+
+    public function test_attribute_image_is_null_or_image_for_updating_profile()
+    {
+        $user = User::factory()->create();
+
+        Storage::fake('public');
+
+        $profile = Profile::factory()
+            ->for(\App\Models\User::factory()->state([
+                'name' => 'user',
+                'email' => 'user@gmail.com',
+            ]))
+            ->create();
+
+        $response = $this->actingAs($profile->user)->patch('/api/profiles', [
+            'title' => 'updating title',
+            'description' => 'updating description',
+            'image' => 'image',
+        ]);
+
+        $response->assertStatus(302);
     }
 }
