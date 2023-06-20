@@ -30,4 +30,11 @@ class ImageService
         \Intervention\Image\Facades\Image::make($image)->fit($withd, $height)
             ->save(storage_path('app/public/images/' . $imageName));
     }
+
+    public function update(string $oldImagePath, UploadedFile $image): array
+    {
+        Storage::disk('public')->delete($oldImagePath);
+
+        return $this->put($image);
+    }
 }

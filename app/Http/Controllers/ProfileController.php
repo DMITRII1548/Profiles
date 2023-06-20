@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Profile\StoreRequest;
+use App\Http\Requests\Profile\UpdateRequest;
 use App\Http\Resources\Profile\ProfileResource;
 use App\Models\Profile;
 use App\Services\ImageService;
@@ -17,7 +18,7 @@ class ProfileController extends Controller
 
     public function __construct()
     {
-        $this->imageService = new ImageService;
+        $this->imageService = new ImageService();
     }
 
     public function showProfileOfCurrentUser(): array|Response
@@ -68,6 +69,29 @@ class ProfileController extends Controller
 
         return response([
             'deleted' => true,
+        ]);
+    }
+
+    public function update(UpdateRequest $request): Response
+    {
+        $data = $request->validated();
+
+        $profile = Auth::user()->profile;
+
+        if ($data['image']) {
+            $image = $this->imageService->update($profile->avatar_path, $data['image']);
+            $this->imageService->fit($data['image'], $image['name'], 224, 224);
+
+            $profile->avatar_path = $image['path'];
+            $profile->avatar_url = $image['url'];
+        }
+
+        $profile->title = $data['title'];
+        $profile->description = $data['description'];
+        $profile->save();
+
+        return response([
+            'updated' => true
         ]);
     }
 }
