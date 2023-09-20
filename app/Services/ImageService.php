@@ -27,8 +27,12 @@ class ImageService
         int $withd,
         int $height
     ): void {
-        \Intervention\Image\Facades\Image::make($image)->fit($withd, $height)
-            ->save(storage_path('app/public/images/' . $imageName));
+        $imageInstance = \Intervention\Image\Facades\Image::make($image)
+            ->fit($withd, $height);
+
+        Storage::disk('public')->delete('images/' . $imageName);
+        Storage::disk('public')->put('images/' . $imageName, $imageInstance->stream()->__toString());
+
     }
 
     public function update(string $oldImagePath, UploadedFile $image): array

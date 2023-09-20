@@ -63,7 +63,7 @@ export default {
                 }
             })
                 .then(res => {
-                    this.$router.push({ name: 'profile.show' })
+                    this.$router.push({ name: 'authUserProfile.show' })
                 })
                 .catch(error => {
                     this.errors = error.response.data.errors
