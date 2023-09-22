@@ -9,7 +9,7 @@
             </div>
             <div class="w-64">
                 <p>Avatar</p>
-                <input v-on:change="onChangeFile" type="file" multiple>
+                <VueImageInput size='size-44' mimes='.png,.jpg' title="Preview (224px*224px)" ref='imageinput' v-on:change="onChangeFile"/>
                 <p v-if="errors.image" class="text-sm text-red-500">{{ errors.image[0] }}</p>
             </div>
             <div class="w-64">
@@ -29,6 +29,9 @@
 </template>
 
 <script>
+import { VueImageInput } from 'vue3-picture-input';
+import 'vue3-picture-input/style.css';
+
 export default {
     name: 'Create',
 
@@ -49,7 +52,7 @@ export default {
 
     methods: {
         onChangeFile(event) {
-            this.file = event.target.files[0]
+            this.file = this.$refs.imageinput.file
         },
 
         store() {
@@ -70,7 +73,15 @@ export default {
                 })
         },
     },
+
+    components: {
+        VueImageInput,
+    }
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.w-44 {
+    width: calc(12rem + 20px);
+}
+</style>
