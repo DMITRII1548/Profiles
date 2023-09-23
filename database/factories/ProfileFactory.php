@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -17,7 +18,8 @@ class ProfileFactory extends Factory
      */
     public function definition(): array
     {
-        $imagePath = '/images/' . $this->faker->image('public/storage/images', 640, 480, null, false);
+        $imageFile = UploadedFile::fake()->image('test.jpg');
+        $imagePath = Storage::disk('public')->put('/images', $imageFile);
 
         $imageUrl = url('/storage' . $imagePath);
 

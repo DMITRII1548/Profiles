@@ -41,11 +41,15 @@ class ProfileController extends Controller
     {
         $data = $request->validated();
 
+        if (Auth::user()->profile) {
+            return response([], 409);
+        }
+
         // storing file
         $image = $this->imageService->put($data['image']);
 
         // fit image
-        $this->imageService->fit($data['image'], $image['name'], 224, 224);
+        $image['path'] = $this->imageService->fit($data['image'], $image['name'], $image['path'], 224, 224);
 
         // create profile
         Auth::user()
@@ -78,9 +82,9 @@ class ProfileController extends Controller
 
         $profile = Auth::user()->profile;
 
-        if ($data['image']) {
+        if (isset($data['image'])) {
             $image = $this->imageService->update($profile->avatar_path, $data['image']);
-            $this->imageService->fit($data['image'], $image['name'], 224, 224);
+            $image['path'] = $this->imageService->fit($data['image'], $image['name'], $image['path'],  224, 224);
 
             $profile->avatar_path = $image['path'];
             $profile->avatar_url = $image['url'];

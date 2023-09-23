@@ -36,7 +36,7 @@ class ProfileTest extends TestCase
             'description' => 'description for profile',
         ]);
 
-        Storage::disk('public')->assertExists(Auth::user()->profile->avatar_path);
+        Storage::disk('public')->assertExists(User::find($user->id)->profile->avatar_path);
     }
 
     public function test_user_can_not_create_second_profile(): void
@@ -370,7 +370,7 @@ class ProfileTest extends TestCase
         $response->assertStatus(302);
     }
 
-    public function test_attribute_image_can_be_null_for_updating_profile()
+    public function test_attribute_image_can_be_null_for_updating_profile(): void
     {
         $user = User::factory()->create();
 
@@ -392,7 +392,7 @@ class ProfileTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_attribute_image_can_be_image_for_updating_profile()
+    public function test_attribute_image_can_be_image_for_updating_profile(): void
     {
         $user = User::factory()->create();
 
@@ -414,7 +414,7 @@ class ProfileTest extends TestCase
         $response->assertStatus(200);
     }
 
-    public function test_attribute_image_is_null_or_image_for_updating_profile()
+    public function test_attribute_image_is_null_or_image_for_updating_profile(): void
     {
         $user = User::factory()->create();
 

@@ -9,7 +9,7 @@
             </div>
             <div class="w-64">
                 <p>Avatar</p>
-                <input v-on:change="onChangeFile" type="file" multiple>
+                <VueImageInput size='size-44' mimes='.png,.jpg' title="Preview (224px*224px)" ref='imageinput' v-on:change="onChangeFile"/>
                 <p v-if="errors.image" class="text-sm text-red-500">{{ errors.image[0] }}</p>
             </div>
             <div class="w-64">
@@ -19,7 +19,7 @@
             <div class="flex gap-1">
                 <button :disabled="isDisabled" type="submit"
                     class="font-medium border-2 border-black px-2 py-1 rounded w-32 bg-sky-500/100 mt-3 hover:bg-sky-500/75">
-                    Create</button>
+                    Update</button>
                 <button class="font-medium border-2 border-black px-2 py-1 rounded w-32 bg-sky-500/100 mt-3 hover:bg-sky-500/75">
                     <router-link :to="{ name: 'user.dashboard' }">Cancel</router-link>
                 </button>
@@ -29,6 +29,9 @@
 </template>
 
 <script>
+import { VueImageInput } from 'vue3-picture-input';
+import 'vue3-picture-input/style.css';
+
 export default {
     name: 'Create',
 
@@ -49,7 +52,7 @@ export default {
 
     methods: {
         onChangeFile(event) {
-            this.file = event.target.files[0]
+            this.file = this.$refs.imageinput.file
         },
 
         store() {
@@ -63,14 +66,22 @@ export default {
                 }
             })
                 .then(res => {
-                    this.$router.push({ name: 'profile.show' })
+                    this.$router.push({ name: 'authUserProfile.show' })
                 })
                 .catch(error => {
                     this.errors = error.response.data.errors
                 })
         },
     },
+
+    components: {
+        VueImageInput,
+    }
 }
 </script>
 
-<style scoped></style>
+<style scoped>
+.w-44 {
+    width: calc(12rem + 20px);
+}
+</style>
