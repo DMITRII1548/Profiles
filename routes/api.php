@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -30,4 +31,8 @@ Route::prefix('profiles')->group(function () {
     Route::post('/', [ProfileController::class, 'store']);
     Route::delete('/', [ProfileController::class, 'destroy']);
     Route::patch('/', [ProfileController::class, 'update']);
+})->middleware(['auth:sanctum', 'verified']);
+
+Route::prefix('posts')->group(function () {
+    Route::post('/', [PostController::class, 'store']);
 })->middleware(['auth:sanctum', 'verified']);
